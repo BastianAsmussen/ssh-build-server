@@ -10,7 +10,10 @@ fn main() {
 
     session.set_tcp_stream(TcpStream::connect(format!("{}:{}", "localhost", 22)).unwrap());
     session.handshake().unwrap();
-    session.userauth_password(std::env::var("SSH_USERNAME").unwrap().as_str(), std::env::var("SSH_PASSWORD").unwrap().as_str()).unwrap();
+    session.userauth_password(
+        std::env::var("SSH_USERNAME").unwrap().as_str(),
+        std::env::var("SSH_PASSWORD").unwrap().as_str()
+    ).unwrap();
 
     // Send a file.
     let mut remote_file = session.scp_send(Path::new("remote.txt"),
