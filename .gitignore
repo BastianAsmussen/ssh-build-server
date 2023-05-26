@@ -1,5 +1,8 @@
-# Rust
+# Compiled Source
 /target
+
+# Windows Installer
+/wix
 
 # IntelliJ IDEA
 .idea
