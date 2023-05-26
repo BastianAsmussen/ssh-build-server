@@ -3,5 +3,16 @@ name = "ssh_build_server"
 version = "0.1.0"
 edition = "2021"
 
+license = "Apache-2.0"
+readme = "README.md"
+
+authors = ["Bastian Almar Wolsgaard Asmussen <bastianassmussen@gmail.com>"]
+description = "A bridge between an SSH server and your computer for compiling source code."
+
+homepage = "https://github.com/BastianAsmussen/ssh-build-server"
+
 [dependencies]
 ssh2 = "0.9.4"
+
+config = "0.13.3"
+serde = { version = "1.0.163", features = ["derive"] }
