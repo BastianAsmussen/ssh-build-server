@@ -23,8 +23,7 @@ fn main() {
 
     // Load the config.
     println!("Loading config...");
-    let settings = Settings::new(config_path);
-    let settings = match settings {
+    let settings = match Settings::new(config_path) {
         Ok(settings) => settings,
         Err(err) => {
             eprintln!("Failed to load config: {}", err);
@@ -36,14 +35,12 @@ fn main() {
     // Connect to the local SSH.
     println!("Connecting to SSH...");
     let mut sbs = Sbs::new(Session::new().unwrap());
-
-    let connect_operation = sbs.connect(
+    match sbs.connect(
         &settings.ssh.host,
         &settings.ssh.port,
         &settings.ssh.username,
         &settings.ssh.password,
-    );
-    match connect_operation {
+    ) {
         Ok(_) => {}
         Err(err) => {
             eprintln!("Failed to connect to SSH: {}", err);
@@ -53,12 +50,14 @@ fn main() {
     }
 
     // Clone the directory to the local SSH.
-    println!("Copying project to remote... ({} -> {})", settings.compilation.local_project_root, settings.compilation.remote_project_root);
-    let send_operation = sbs.send_directory(
+    println!("Copying project to remote... ({} -> {})",
+             settings.compilation.local_project_root,
+             settings.compilation.remote_project_root
+    );
+    match sbs.send_directory(
         Path::new(&settings.compilation.local_project_root),
         Path::new(&settings.compilation.remote_project_root),
-    );
-    match send_operation {
+    ) {
         Ok(_) => {}
         Err(err) => {
             eprintln!("Failed to copy project: {}", err);
@@ -69,8 +68,7 @@ fn main() {
 
     // Make the SSH server execute the commands.
     println!("Compiling code...");
-    let compile_operation = sbs.execute_commands(&settings.commands.to_vec(), false);
-    match compile_operation {
+    match sbs.execute_commands(&settings.commands.to_vec(), false) {
         Ok(_) => {}
         Err(err) => {
             eprintln!("Failed to compile code: {}", err);
@@ -81,11 +79,10 @@ fn main() {
 
     // Download the output folder from the SSH server.
     println!("Downloading output folder...");
-    let download_operation = sbs.receive_directory(
+    match sbs.receive_directory(
         Path::new(&settings.compilation.get_local_output_directory()),
         Path::new(&settings.compilation.get_remote_output_directory()),
-    );
-    match download_operation {
+    ) {
         Ok(_) => {}
         Err(err) => {
             eprintln!("Failed to download output folder: {}", err);
@@ -96,8 +93,7 @@ fn main() {
 
     // Execute post-compilation commands.
     println!("Executing post-compilation commands...");
-    let post_compile_operation = sbs.execute_commands(&settings.commands.to_vec(), true);
-    match post_compile_operation {
+    match sbs.execute_commands(&settings.commands.to_vec(), true) {
         Ok(_) => {}
         Err(err) => {
             eprintln!("Failed to execute post-compilation commands: {}", err);
@@ -108,8 +104,7 @@ fn main() {
 
     // Disconnect from the SSH server.
     println!("Disconnecting from SSH...");
-    let disconnect_operation = sbs.disconnect(None, "", None);
-    match disconnect_operation {
+    match sbs.disconnect(None, "", None) {
         Ok(_) => {}
         Err(err) => {
             eprintln!("Failed to disconnect from SSH: {}", err);

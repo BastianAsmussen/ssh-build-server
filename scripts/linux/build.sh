@@ -1,6 +1,12 @@
 # Set terminal colors to always enabled.
 export CARGO_TERM_COLOR=always
 
+# Clean the artifacts.
+echo "Cleaning the artifacts..." &&
+cargo clean &&
+# Update the cargo.toml file.
+echo "Updating the cargo.toml file..." &&
+cargo update &&
 # Build the project.
 echo "Building the project..." &&
 cargo build --release &&
