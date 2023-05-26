@@ -10,7 +10,6 @@ pub struct Settings {
 
 impl Settings {
     pub fn new(path: &str) -> Result<Self, ConfigError> {
-
         let default_config = Config::builder()
             .add_source(config::File::from_str(DEFAULT_SETTINGS, config::FileFormat::Toml))
             .build()?;
@@ -94,7 +93,7 @@ pub struct Command {
     pub execute_after_compilation: bool,
 }
 
-/// The default settings profile.
+/// The default settings profile for the program.
 pub const DEFAULT_SETTINGS: &str = r##"
 [ssh]
 host = "localhost"
@@ -108,7 +107,7 @@ remote_project_root = "~/remote/project" # The path to the project on the remote
 output_directory = "target/release" # The directory where the compiled binary is located relative to the project root.
 
 [[commands]]
-command = "cd ~/remote/project"
+command = "cd /remote/project"
 description = "Change directory to the project root."
 execute_after_compilation = false
 
